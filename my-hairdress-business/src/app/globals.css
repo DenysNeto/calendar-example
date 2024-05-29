@@ -4397,6 +4397,7 @@ body {
   opacity: 0.7 !important;
   cursor: not-allowed !important;
   z-index: 10000;
+  pointer-events: none;
 }
 
 .close-btn:hover {

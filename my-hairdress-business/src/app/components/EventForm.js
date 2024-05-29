@@ -27,6 +27,16 @@ const EventForm = ({ onAddEvent, selectedDate }) => {
 
   const { state } = useStore();
 
+  const getEvents = () => {
+    let findedEvents = state.eventsByDay.find((day) => {
+      return moment(new Date(selectedDate)).isSame(day.date, "day");
+    });
+    if (findedEvents) {
+      return findedEvents.events;
+    }
+    return [];
+  };
+
   const events =
     state.eventsByDay.find((day) => {
       return moment(new Date(selectedDate)).isSame(day.date, "day");
@@ -111,7 +121,7 @@ const EventForm = ({ onAddEvent, selectedDate }) => {
                   startTime,
                   endTime,
                   timeToMinutes(procedure || "1h"),
-                  events
+                  getEvents()
                 ).map((el) => el.title)}
                 selectedOptions={procedures}
                 onChange={setProcedures}

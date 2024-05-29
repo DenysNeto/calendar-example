@@ -21,33 +21,33 @@ const MyCalendar = () => {
   const [notification, setNotification] = useState(null);
   const [touchTimer, setTouchTimer] = useState(null);
 
-  useEffect(() => {
-    // Function to add event listener to elements after page has rendered
-    function addClickListenerToDayBackgrounds() {
-      // Select all elements with the class "rbc-day-bg"
-      const elements = document.querySelectorAll(".rbc-day-bg");
-      console.log("XXXX", elements);
+  function addClickListenerToDayBackgrounds() {
+    // Select all elements with the class "rbc-day-bg"
+    const elements = document.querySelectorAll(".rbc-day-bg");
 
-      // Loop through each element and add a click event listener
-      elements.forEach((element) => {
-        element.addEventListener("click", handleClick);
-      });
+    // Loop through each element and add a click event listener
+    elements.forEach((element) => {
+      element.removeEventListener("click", handleClick);
+      element.addEventListener("click", handleClick);
+    });
 
-      // Event handler function
-      function handleClick(event) {
-        // Check if the classList contains a class that includes "2024"
-        const classList = event.target.classList;
-        for (let i = 0; i < classList.length; i++) {
-          if (classList[i].includes("2024")) {
-            setSelectedDate(new Date(classList[i]));
-            setIsModalOpen(true);
-            // If found, log the class name
-            console.log("Class containing '2024':", classList[i]);
-            break;
-          }
+    // Event handler function
+    function handleClick(event) {
+      // Check if the classList contains a class that includes "2024"
+      const classList = event.target.classList;
+      for (let i = 0; i < classList.length; i++) {
+        if (classList[i].includes("2024")) {
+          setSelectedDate(new Date(classList[i]));
+          setIsModalOpen(true);
+          // If found, log the class name
+          break;
         }
       }
     }
+  }
+
+  useEffect(() => {
+    // Function to add event listener to elements after page has rendered
 
     // Call the function to add event listener after page has rendered
     setTimeout(() => {
@@ -90,7 +90,6 @@ const MyCalendar = () => {
         return moment(date).isSame(offRangeDay, "day");
       });
 
-      console.log("DATE", toISOStringWithTimezone(date));
       const today = new Date();
       const isPast = moment(date).isBefore(today, "day");
 
@@ -118,14 +117,22 @@ const MyCalendar = () => {
   // };
 
   const handleNavigate = (date, view, action) => {
+    let dateX = selectedDate ? new Date(selectedDate) : new Date();
     if (action === "NEXT") {
-      setSelectedDate(moment(new Date(selectedDate)).add(1, "months").toDate());
+      setSelectedDate(moment(dateX).add(1, "months").toDate());
+      setTimeout(() => {
+        addClickListenerToDayBackgrounds();
+      }, 500);
     } else if (action === "PREV") {
-      setSelectedDate(
-        moment(new Date(selectedDate)).subtract(1, "months").toDate()
-      );
+      setSelectedDate(moment(dateX).subtract(1, "months").toDate());
+      setTimeout(() => {
+        addClickListenerToDayBackgrounds();
+      }, 500);
     } else if (action === "TODAY") {
       setSelectedDate(new Date());
+      setTimeout(() => {
+        addClickListenerToDayBackgrounds();
+      }, 500);
     } else {
       setSelectedDate(date);
     }
