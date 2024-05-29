@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { toISOStringWithTimezone } from "@/app/hooks/timeSlots";
 import moment from "moment";
@@ -19,6 +19,49 @@ const MyCalendar = () => {
   const { state } = useStore();
   const [allEvents, setAllEvents] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [touchTimer, setTouchTimer] = useState(null);
+
+  useEffect(() => {
+    // Function to add event listener to elements after page has rendered
+    function addClickListenerToDayBackgrounds() {
+      // Select all elements with the class "rbc-day-bg"
+      const elements = document.querySelectorAll(".rbc-day-bg");
+      console.log("XXXX", elements);
+
+      // Loop through each element and add a click event listener
+      elements.forEach((element) => {
+        element.addEventListener("click", handleClick);
+      });
+
+      // Event handler function
+      function handleClick(event) {
+        // Check if the classList contains a class that includes "2024"
+        const classList = event.target.classList;
+        for (let i = 0; i < classList.length; i++) {
+          if (classList[i].includes("2024")) {
+            setSelectedDate(new Date(classList[i]));
+            setIsModalOpen(true);
+            // If found, log the class name
+            console.log("Class containing '2024':", classList[i]);
+            break;
+          }
+        }
+      }
+    }
+
+    // Call the function to add event listener after page has rendered
+    setTimeout(() => {
+      addClickListenerToDayBackgrounds();
+    }, 1000);
+
+    // Clean up function to remove event listeners (optional)
+    return () => {
+      const elements = document.querySelectorAll(".rbc-day-bg");
+      elements.forEach((element) => {
+        element.removeEventListener("click", handleClick);
+      });
+    };
+  }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -46,17 +89,19 @@ const MyCalendar = () => {
       const isOffRange = offRangeDays.some((offRangeDay) => {
         return moment(date).isSame(offRangeDay, "day");
       });
+
+      console.log("DATE", toISOStringWithTimezone(date));
       const today = new Date();
       const isPast = moment(date).isBefore(today, "day");
 
       if (isOffRange || isPast) {
         return {
-          className: "rbc-off-range-bg-custom", // Apply a CSS class to off-range days
+          className: `rbc-off-range-bg-custom ${toISOStringWithTimezone(date)}`, // Apply a CSS class to off-range days
         };
       }
 
       return {
-        className: "", // Apply a default class
+        className: `${toISOStringWithTimezone(date)}`, // Apply a default class
       };
     },
     [offRangeDays]
@@ -66,10 +111,11 @@ const MyCalendar = () => {
     setView(newView);
   };
 
-  const handleSelectSlot = (slotInfo) => {
-    setSelectedDate(slotInfo.start);
-    setIsModalOpen(true);
-  };
+  // const handleSelectSlot = (slotInfo) => {
+  //     setSelectedDate(slotInfo.start);
+  //     setIsModalOpen(true);
+  //   }
+  // };
 
   const handleNavigate = (date, view, action) => {
     if (action === "NEXT") {
@@ -109,7 +155,6 @@ const MyCalendar = () => {
         defaultView="month"
         views={["month"]}
         onView={handleViewChange}
-        onSelectSlot={handleSelectSlot}
         onNavigate={handleNavigate}
         view={view}
         date={selectedDate}
