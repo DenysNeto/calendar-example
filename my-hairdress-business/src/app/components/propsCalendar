@@ -1,0 +1,114 @@
+allDayAccessor: String or Function
+
+Accessor for determining if an event should be displayed as an all-day event.
+components: Object
+
+Custom components for different parts of the calendar (e.g., toolbar, event, etc.).
+culture: String
+
+The culture to use for formatting dates and times. By default, it uses the browser's locale.
+date: Date
+
+The current date to display on the calendar.
+dayLayoutAlgorithm: Function
+
+Custom function to determine the layout of events within a day.
+dayPropGetter: Function
+
+Function to customize the props of day cells.
+defaultDate: Date
+
+The default date to display on the calendar.
+defaultView: String
+
+The default view to display when the calendar is first rendered.
+drilldownView: String
+
+The view to drill down to when a date is clicked.
+eventPropGetter: Function
+
+Function to customize the props of event components.
+events: Array
+
+An array of event objects to display on the calendar.
+formats: Object
+
+Custom formatting options for dates and times.
+getDrilldownView: Function
+
+Function to determine the drilldown view for a specific date.
+length: Number
+
+The number of days or weeks to display in the month or week view, respectively.
+localizer: Object
+
+The localizer object to use for formatting dates and times.
+max: Date
+
+The maximum date allowed to be displayed on the calendar.
+messages: Object
+
+Custom messages and labels for different parts of the calendar.
+min: Date
+
+The minimum date allowed to be displayed on the calendar.
+onNavigate: Function
+
+Callback function called when the calendar is navigated (e.g., when the date range changes).
+onSelectEvent: Function
+
+Callback function called when an event is clicked.
+onSelectSlot: Function
+
+Callback function called when a slot (date) is clicked.
+onView: Function
+
+Callback function called when the view changes (e.g., when switching between month and week views).
+popup: Boolean
+
+Whether to render events in a popup when they are clicked.
+popupOffset: Number or Object
+
+The offset of the event popup from the clicked position.
+resourceAccessor: String or Function
+
+Accessor for determining the resource associated with an event.
+resourceIdAccessor: String or Function
+
+Accessor for determining the ID of the resource associated with an event.
+resourceTitleAccessor: String or Function
+
+Accessor for determining the title of the resource associated with an event.
+resources: Array
+
+An array of resource objects to display alongside events.
+rtl: Boolean
+
+Whether the calendar should be rendered in right-to-left mode.
+selectable: Boolean
+
+Whether dates can be selected on the calendar.
+selected: Date or Array
+
+The currently selected date or dates on the calendar.
+showMultiDayTimes: Boolean
+
+Whether to display events that span multiple days as part of each day or as a single entity.
+step: Number
+
+The number of minutes in each time slot when displaying day or week views.
+timeslots: Number
+
+The number of time slots to display when displaying day or week views.
+titleAccessor: String or Function
+
+Accessor for determining the title of an event.
+toolbar: Boolean
+
+Whether to display the toolbar with navigation controls.
+view: String
+
+The current view of the calendar.
+views: Array
+
+An array of views to display in the view selector.
